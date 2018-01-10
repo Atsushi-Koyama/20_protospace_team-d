@@ -16,6 +16,9 @@ gem 'bootstrap-sass'
 gem 'devise'
 gem 'carrierwave'
 gem 'rmagick'
+gem 'rails_12factor', group: :production
+
+
 
 group :development, :test do
   gem 'byebug'
@@ -25,3 +28,4 @@ group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
+
