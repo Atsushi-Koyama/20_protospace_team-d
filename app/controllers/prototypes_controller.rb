@@ -1,5 +1,6 @@
 class PrototypesController < ApplicationController
-  before_action :set_prototype, only: :show
+  before_action :set_prototype, only: [:show, :destroy,]
+
 
   def index
     @prototypes = Prototype.all
@@ -16,6 +17,27 @@ class PrototypesController < ApplicationController
       redirect_to :root, notice: 'New prototype was successfully created'
     else
       redirect_to :new, alert: 'New prototype was unsuccessfully created'
+    end
+  end
+
+  def destroy
+    prototype = Prototype.find(params[:id])
+    prototype.destroy if prototype.user_id == current_user.id
+    redirect_to :root, notice: 'Prototype was successfully updated.'
+  end
+
+  def edit
+    @prototype = Prototype.find(params[:id])
+    @prototype.captured_images.build
+  end
+
+  def update
+    prototype = Prototype.find(params[:id])
+    if prototype.user_id == current_user.id
+      prototype.update(prototype_params)
+      redirect_to :root, notice: "prototype was successfully updated"
+    else
+      render :edit
     end
   end
 
