@@ -366,6 +366,20 @@ body {
           border: 1px solid #eee;
           margin-right: 10px;
 
+            span.count {
+              float: right;
+              font-weight:bold;
+              margin-left: 5px;
+            }
+        }
+
+        button.liked {
+          width: 110px;
+          height: 62px;
+          background-color: white;
+          border: 1px solid #eee;
+          margin-right: 10px;
+
             .fa-heart {
               color: red;
             }
@@ -376,7 +390,12 @@ body {
               margin-left: 5px;
             }
         }
+
         button.like:hover {
+          background-color: #eee;
+          border: 1px solid #eee;
+        }
+        button.liked:hover {
           background-color: #eee;
           border: 1px solid #eee;
         }

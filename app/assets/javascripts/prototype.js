@@ -1,4 +1,22 @@
 $(function() {
+  function append_like(like) {
+    var html = `<button class="like">
+                  <i class="fa fa-heart fa-1x"></i>
+                  LIKE
+                  <span class="count">${ like.count }</span>
+                </button>`
+    $(".button_likes").append(html);
+  }
+
+  function append_liked(like) {
+    var html = `<button class="liked">
+                  <i class="fa fa-heart fa-1x"></i>
+                  LIKE
+                  <span class="count">${ like.count }</span>
+                </button>`
+    $(".button_likes").append(html);
+  }
+
   $("#prototype_captured_images_attributes_0_content").change(function(){
     if (!this.files.length) {
       return;
@@ -57,5 +75,32 @@ $(function() {
       image.imgLiquid()
     };
     fileReader.readAsDataURL(file);
+  });
+
+  $(".button_likes").on("click", function(){
+    console.log("test")
+    if ($("button").hasClass("liked")){
+      $.ajax({
+        url: "/likes/" + $(this).data("prototype-id"),
+        type: "delete",
+        data: { prototype_id: $(this).data("prototype-id") },
+        dataType: "json"
+      })
+      .done(function(data){
+        $(".liked").remove()
+        append_like(data);
+      })
+    }else{
+      $.ajax({
+        url: "/likes",
+        type: "post",
+        data: { prototype_id: $(this).data("prototype-id") },
+        dataType: "json"
+      })
+      .done(function(data){
+        $(".like").remove()
+        append_liked(data);
+      })
+    }
   });
 });
