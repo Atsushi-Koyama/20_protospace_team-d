@@ -3,7 +3,7 @@ $(function() {
     var html = `<button class="like">
                   <i class="fa fa-heart fa-1x"></i>
                   LIKE
-                  <span class="count">${ like.count }</span>
+                  <span class="count">${ like.length }</span>
                 </button>`
     $(".button_likes").append(html);
   }
@@ -12,7 +12,7 @@ $(function() {
     var html = `<button class="liked">
                   <i class="fa fa-heart fa-1x"></i>
                   LIKE
-                  <span class="count">${ like.count }</span>
+                  <span class="count">${ like.length }</span>
                 </button>`
     $(".button_likes").append(html);
   }
@@ -80,26 +80,37 @@ $(function() {
   $(".button_likes").on("click", function(){
     console.log("test")
     if ($("button").hasClass("liked")){
+      var prototype_id = $(this).data("prototype-id")
+      var user_id = $(this).data("user-id")
       $.ajax({
-        url: "/likes/" + $(this).data("prototype-id"),
+        url: `/like/${ prototype_id }.js`,
         type: "delete",
-        data: { prototype_id: $(this).data("prototype-id") },
+        data: { prototype_id: prototype_id },
         dataType: "json"
       })
       .done(function(data){
         $(".liked").remove()
         append_like(data);
       })
+      .fail(function() {
+        alert('通信に失敗しました');
+      })
     }else{
+      var prototype_id = $(this).data("prototype-id")
+      var user_id = $(this).data("user-id")
       $.ajax({
-        url: "/likes",
+        url: `/like/${ prototype_id }.js`,
         type: "post",
-        data: { prototype_id: $(this).data("prototype-id") },
+        data: { prototype_id: prototype_id, user_id: user_id },
         dataType: "json"
       })
       .done(function(data){
+        console.log(data)
         $(".like").remove()
         append_liked(data);
+      })
+      .fail(function() {
+        alert('通信に失敗しました');
       })
     }
   });
