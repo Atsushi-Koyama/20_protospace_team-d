@@ -93,7 +93,9 @@ $(function() {
         append_like(data);
       })
       .fail(function() {
-        alert('通信に失敗しました');
+        setTimeout(function(){
+          location.reload();
+        },1);
       })
     }else{
       var prototype_id = $(this).data("prototype-id")
@@ -110,7 +112,9 @@ $(function() {
         append_liked(data);
       })
       .fail(function() {
-        alert('通信に失敗しました');
+        setTimeout(function(){
+          location.reload();
+        },1);
       })
     }
   });
