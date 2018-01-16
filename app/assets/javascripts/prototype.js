@@ -1,4 +1,22 @@
 $(function() {
+  function append_like(like) {
+    var html = `<button class="like">
+                  <i class="fa fa-heart fa-1x"></i>
+                  LIKE
+                  <span class="count">${ like.length }</span>
+                </button>`
+    $(".button_likes").append(html);
+  }
+
+  function append_liked(like) {
+    var html = `<button class="liked">
+                  <i class="fa fa-heart fa-1x"></i>
+                  LIKE
+                  <span class="count">${ like.length }</span>
+                </button>`
+    $(".button_likes").append(html);
+  }
+
   $("#prototype_captured_images_attributes_0_content").change(function(){
     if (!this.files.length) {
       return;
@@ -57,5 +75,47 @@ $(function() {
       image.imgLiquid()
     };
     fileReader.readAsDataURL(file);
+  });
+
+  $(".button_likes").on("click", function(){
+    console.log("test")
+    if ($("button").hasClass("liked")){
+      var prototype_id = $(this).data("prototype-id")
+      var user_id = $(this).data("user-id")
+      $.ajax({
+        url: `/like/${ prototype_id }.js`,
+        type: "delete",
+        data: { prototype_id: prototype_id },
+        dataType: "json"
+      })
+      .done(function(data){
+        $(".liked").remove()
+        append_like(data);
+      })
+      .fail(function() {
+        setTimeout(function(){
+          location.reload();
+        },1);
+      })
+    }else{
+      var prototype_id = $(this).data("prototype-id")
+      var user_id = $(this).data("user-id")
+      $.ajax({
+        url: `/like/${ prototype_id }.js`,
+        type: "post",
+        data: { prototype_id: prototype_id, user_id: user_id },
+        dataType: "json"
+      })
+      .done(function(data){
+        console.log(data)
+        $(".like").remove()
+        append_liked(data);
+      })
+      .fail(function() {
+        setTimeout(function(){
+          location.reload();
+        },1);
+      })
+    }
   });
 });

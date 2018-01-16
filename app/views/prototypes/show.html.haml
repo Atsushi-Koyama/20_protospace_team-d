@@ -13,6 +13,23 @@
             = link_to "#{@prototype.user.name}", user_path(@prototype.user)
             .degree
               = @prototype.user.position
+    .likes_box
+      .like_button
+        .button_likes{ "data-prototype-id": "#{@prototype.id}", "data-user-id": "#{@prototype.user.id}" }
+          - if @prototype.like_user(current_user) == nil
+            %button.like
+              %i.fa.fa-heart.fa-1x
+              LIKE
+              %span.count
+                = @likes.count
+          - else
+            %button.liked
+              %i.fa.fa-heart.fa-1x
+              LIKE
+              %span.count
+                = @likes.count
+        .button_sns
+
   .row
     .col-md-9.image-box
       = image_tag(@prototype.set_main_thumbnail.large, class: 'img-responsive img-size-fix', style: "margin: 0 auto;")
