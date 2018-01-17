@@ -54,3 +54,24 @@
           %a{href: "#", class: "btn btn-default"} iPad
         %li
           %a{href: "#", class: "btn btn-default"} wireframe
+  .row.proto-comments
+    %h4.col-md-12
+      Comments
+      %span
+        (0)
+    .col-md-8#comment_area
+      .comment_list
+
+      / = form_for @comment do |f|
+      %h4
+        Write a comment
+      .row
+        .form-group.col-md-10
+          / = f.text_area :comment
+          %textarea
+            Your comments
+        .form-group.col-md-2
+          / = f.submit "Comment", class: "btn btn-primary"
+          %button
+            COMMENT
+

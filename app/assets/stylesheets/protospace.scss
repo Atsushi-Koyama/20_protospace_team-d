@@ -425,6 +425,13 @@ body {
     .form-group {
       textarea {
         width: 100%;
+        height: 65px;
+      }
+      button {
+        width: 100px;
+        height: 40px;
+        background-color: #4A8DDC;
+        color: white;
       }
     }
   }
