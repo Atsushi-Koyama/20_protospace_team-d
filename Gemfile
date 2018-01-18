@@ -18,6 +18,7 @@ gem 'carrierwave'
 gem 'rmagick'
 gem 'rails_12factor', group: :production
 gem 'font-awesome-rails'
+gem 'kaminari'
 
 
 

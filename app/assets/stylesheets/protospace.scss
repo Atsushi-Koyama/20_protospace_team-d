@@ -737,3 +737,15 @@ body {
   color: #a94442;
 }
 
+
+.current {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  line-height: 1.428571429;
+  text-decoration: none;
+  color: #337ab7;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-left: -1px;
+}
