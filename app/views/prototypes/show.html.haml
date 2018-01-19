@@ -58,20 +58,21 @@
     %h4.col-md-12
       Comments
       %span
-        (0)
+        = @comments.length
     .col-md-8#comment_area
       .comment_list
-
-      / = form_for @comment do |f|
-      %h4
-        Write a comment
-      .row
-        .form-group.col-md-10
-          / = f.text_area :comment
-          %textarea
-            Your comments
-        .form-group.col-md-2
-          / = f.submit "Comment", class: "btn btn-primary"
-          %button
-            COMMENT
-
+        - if @comments.present?
+          - @comments.each do |comment|
+            %p.user_name
+              = comment.user.name
+            %p.comment_text
+              = comment.text
+      .comment_input
+        %h4
+          Write a comment
+        .row
+          = form_for [@prototype, @comment] do |f| 
+            .form-group.col-md-10
+              = f.text_field :text, placeholder:"Your comments", class: "input--message"
+            .form-group.col-md-2
+              = f.submit "COMMENT", class: "btn"
