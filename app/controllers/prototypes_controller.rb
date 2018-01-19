@@ -19,6 +19,37 @@ class PrototypesController < ApplicationController
     end
   end
 
+  def destroy
+    prototype = Prototype.find(params[:id])
+    prototype.destroy if prototype.user_id == current_user.id
+    redirect_to :root, notice: 'Prototype was successfully updated.'
+  end
+
+  def edit
+    @prototype = Prototype.find(params[:id])
+    @captures = @prototype.captured_images
+      @captures.each do |capture|
+      if capture.status == "main"
+        @main_image = capture
+      else
+        @sub_image = capture
+      end
+    end
+    return @main_image
+    return @sub_image
+  end
+
+  def update
+    prototype = Prototype.find(params[:id])
+    if prototype.user_id == current_user.id
+      prototype.update(update_prototype_params)
+      redirect_to :root, notice: "prototype was successfully updated"
+    else
+      render :edit
+    end
+  end
+
+
   def show
     @prototype = Prototype.find(params[:id])
     @likes = Like.where(prototype_id: params[:id])
@@ -38,5 +69,9 @@ class PrototypesController < ApplicationController
       :user_id,
       captured_images_attributes: [:content, :status]
     )
+  end
+
+  def update_prototype_params
+    params.require(:prototype).permit(:title,:catch_copy,:concept,:user_id,captured_images_attributes: [:content, :status, :id])
   end
 end
