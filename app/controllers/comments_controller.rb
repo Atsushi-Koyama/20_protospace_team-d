@@ -1,7 +1,15 @@
 class CommentsController < ApplicationController
   def create
-    @comment = Comment.create(text: comment_params[:text], prototype_id: params[:prototype_id], user_id: current_user.id)
-    redirect_to "/prototypes/#{@comment.prototype.id}"
+    @comment = Comment.new(text: comment_params[:text], prototype_id: params[:prototype_id], user_id: current_user.id)
+    if @comment.save
+      respond_to do |format|
+        format.html { redirect_to prototype_path }
+        format.json
+      end
+    else
+      flash.now[:alert] = "メッセージを入力してください。"
+      render :show
+    end
   end
 
   private

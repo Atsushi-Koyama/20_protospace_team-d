@@ -57,22 +57,23 @@
   .row.proto-comments
     %h4.col-md-12
       Comments
-      %span
-        = @comments.length
+      %span.comment_counter
+        = "(#{@comments.length})"
     .col-md-8#comment_area
       .comment_list
         - if @comments.present?
           - @comments.each do |comment|
-            %p.user_name
+            %h5.user_name
               = comment.user.name
             %p.comment_text
               = comment.text
-      .comment_input
-        %h4
-          Write a comment
-        .row
-          = form_for [@prototype, @comment] do |f| 
-            .form-group.col-md-10
-              = f.text_field :text, placeholder:"Your comments", class: "input--message"
-            .form-group.col-md-2
-              = f.submit "COMMENT", class: "btn"
+      - if user_signed_in?
+        .comment_input
+          %h4
+            Write a comment
+          .row
+            = form_for [@prototype, @comment] do |f| 
+              .form-group.col-md-10
+                = f.text_field :text, placeholder:"Your comments", class: "input--message"
+              .form-group.col-md-2
+                = f.submit "COMMENT", class: "btn"
