@@ -14,21 +14,32 @@
             .degree
               = @prototype.user.position
     .likes_box
-      .like_button
-        .button_likes{ "data-prototype-id": "#{@prototype.id}", "data-user-id": "#{current_user.id}" }
-          - if @prototype.like_user(current_user) == nil
-            %button.like
-              %i.fa.fa-heart.fa-1x
-              LIKE
-              %span.count
-                = @likes.count
-          - else
-            %button.liked
-              %i.fa.fa-heart.fa-1x
-              LIKE
-              %span.count
-                = @likes.count
-        .button_sns
+      - if user_signed_in?
+        .like_button
+          .button_likes{ "data-prototype-id": "#{@prototype.id}", "data-user-id": "#{current_user.id}" }
+            - if @prototype.like_user(current_user) == nil
+              %button.like
+                %i.fa.fa-heart.fa-1x
+                LIKE
+                %span.count
+                  = @likes.count
+            - else
+              %button.liked
+                %i.fa.fa-heart.fa-1x
+                LIKE
+                %span.count
+                  = @likes.count
+      - else
+        = link_to new_user_session_path do
+          .like_button
+            .button_notuser
+              %button.notuser
+                %i.fa.fa-heart.fa-1x
+                LIKE
+                %span.count
+                  = @likes.count
+
+      .button_sns
 
   .row
     .col-md-9.image-box
