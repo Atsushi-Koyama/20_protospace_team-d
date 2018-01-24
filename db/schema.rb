@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20180119012836) do
 
   add_index "comments", ["prototype_id"], name: "fk_rails_5a7b40847a", using: :btree
   add_index "comments", ["user_id"], name: "fk_rails_03de2dc08c", using: :btree
-
+  
   create_table "likes", force: :cascade do |t|
     t.integer  "prototype_id", limit: 4, null: false
     t.integer  "user_id",      limit: 4, null: false
