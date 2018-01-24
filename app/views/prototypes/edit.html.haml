@@ -1,0 +1,65 @@
+.container.proto-new
+  = form_for @prototype do |f|
+    = f.hidden_field :user_id, value: current_user.id
+    .col-md-8.col-md-offset-2
+      %header.row.user-nav.row
+        .col-md-12
+          %h4 Title
+          .proto-new-title
+            = f.text_field :title, required: true, autofocus: true, placeholder: "Input Title"
+      .row
+        .col-md-12
+          %h4 Main Thumbnail
+          .cover-image-upload#main_image_uploader
+            = f.fields_for :captured_images, @main_image  do |image|
+              %img
+              = image.file_field :content
+              = image.hidden_field :status, value: "main"
+              = image_tag(@prototype.set_main_thumbnail, class: 'img-responsive img-size-fix', style: "height: 500px; margin-top: -20px; margin: auto;")
+
+
+        .col-md-12
+          %h4 Sub Thumbnails
+          %ul.proto-sub-list.list-group
+            %li.list-group-item.col-md-4
+              .image-upload_1
+                = f.fields_for :captured_images, @sub_image do |image|
+                  %img
+                  = image.file_field :content
+                  = image.hidden_field :status, value: "sub"
+                  %ul.proto-sub-list
+                    %li.list-group-item
+                      - if @prototype.captured_images.length >= 2
+                        = image_tag(@prototype.captured_images[1].content,class: 'img-responsive')
+
+
+            %li.list-group-item.col-md-4
+              .image-upload_2
+                = f.fields_for :captured_images, @sub_image do |image|
+                  %img
+                  = image.file_field :content
+                  = image.hidden_field :status, value: "sub"
+                  %ul.proto-sub-list
+                    %li.list-group-item
+                      - if @prototype.captured_images.length >= 3
+                        = image_tag(@prototype.captured_images[2].content,class: 'img-responsive')
+            %li.list-group-item.col-md-4
+              .image-upload_3
+                = f.fields_for :captured_images, @sub_image do |image|
+                  %img
+                  = image.file_field :content
+                  = image.hidden_field :status, value: "sub"
+                  %ul.proto-sub-list
+                    %li.list-group-item
+                      - if @prototype.captured_images.length >= 4
+                        = image_tag(@prototype.captured_images[3].content,class: 'img-responsive')
+
+      .row.proto-description
+        .col-md-12
+          %h4 Catch Copy
+          = f.text_field :catch_copy, require: true, placeholder: "Input Catch Copy"
+        .col-md-12
+          %h4 Concept
+          = f.text_area :concept, require: true, placeholder: "Input Concept"
+      .row.text-center.proto-btn
+        = f.submit "PUBLISH", id: "button", class: "btn btn-lg btn-primary btn-block"
