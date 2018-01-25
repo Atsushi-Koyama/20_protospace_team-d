@@ -13,9 +13,33 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @comment = Comment.find(params[:id])
+    if @comment.destroy
+      respond_to do |format|
+        format.html { redirect_to prototype_path }
+        format.json
+      end
+    else
+      flash.now[:alert] = "削除できませんでした。"
+      render :show
+    end
   end
 
   def edit
+  end
+
+
+  def update
+    @comment = Comment.find(params[:id])
+    if @comment.update(text: params[:text], prototype_id: params[:prototype_id], user_id: current_user.id)
+      respond_to do |format|
+        format.html { redirect_to prototype_path }
+        format.json
+      end
+    else
+      flash.now[:alert] = "編集できませんでした。"
+      render :show
+    end
   end
 
   private
@@ -23,3 +47,4 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:text)
   end
 end
+

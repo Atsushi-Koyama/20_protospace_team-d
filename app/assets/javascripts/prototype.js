@@ -67,7 +67,7 @@ $(function() {
       var user_id = $(this).data("user-id")
       $.ajax({
         url: "/like/" + prototype_id + ".js",
-        type: "delete",
+        type: "DELETE",
         data: { prototype_id: prototype_id },
         dataType: "json"
       })
@@ -84,7 +84,7 @@ $(function() {
       var user_id = $(this).data("user-id")
       $.ajax({
         url: "/like/" + prototype_id + ".js",
-        type: "post",
+        type: "POST",
         data: { prototype_id: prototype_id, user_id: user_id },
         dataType: "json"
       })
@@ -101,12 +101,18 @@ $(function() {
 
   // メッセージ機能実装
   function buildHTML(comment){
-    var html = '<h5 class="user_name">'
+    var html = '<div class="comment_each" data-comment-id="' + comment.id + '" data-prototype-id="' + comment.prototype_id + '">'
+               + '<h5 class="user_name">'
                + comment.name
                + "</h5>"
                + '<p class="comment_text">'
                + comment.text
                + "</p>"
+               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '">'
+               + '<p class="comment_destroy">削除</p></a>'
+               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '/edit">'
+               + '<p class="comment_edit">編集</p></a>'
+               + "</div>"
     return html;
   }
 
@@ -132,4 +138,83 @@ $(function() {
     })
     return false;
   })
+
+  // メッセージ機能実装(削除)
+  $(".comment_destroy").on("click", function(){
+    var comment_id = $(this).parent().parent().data('comment-id')
+    var prototype_id = $(this).parent().parent().data("prototype-id")
+    var comment_each = $(this)
+    $.ajax({
+      url: "/prototypes/" + prototype_id + "/comments/" + comment_id,
+      type: "DELETE",
+      data: { prototype_id: prototype_id, id: comment_id },
+      dataType: "json"
+    })
+    .done(function(){
+      comment_each.parent().parent().remove();
+      alert("コメントを削除しました。");
+    })
+    .fail(function() {
+      alert('通信エラー');
+    })
+    return false;
+  });
+
+  // メッセージ機能実装(編集・記入部分表示)
+  function buildEditForm(comment, prototype){
+    var html = '<form class="edit_comment" id="edit_comment" action="/prototypes/' + prototype + '/comments/' + comment + '" method="patch">'
+               + '<textarea name="text">'
+               + '</textarea>'
+               + '<input type="submit" value="EDIT" class="edit_btn">'
+               + '</form>'
+    return html;
+  }
+
+  $(".comment_edit").on("click", function(){
+    var comment_id = $(this).parent().parent().data('comment-id')
+    var prototype_id = $(this).parent().parent().data("prototype-id")
+    var html = buildEditForm(comment_id, prototype_id);
+    $(this).parent().parent().append(html);
+    $(this).remove();
+  });
+
+  // メッセージ機能実装(編集・アップデート)
+  function buildUpdateHTML(comment){
+    var html = '<h5 class="user_name">'
+               + comment.name
+               + "</h5>"
+               + '<p class="comment_text">'
+               + comment.text
+               + "</p>"
+               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '">'
+               + '<p class="comment_destroy">削除</p></a>'
+               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '/edit">'
+               + '<p class="comment_edit">編集</p></a>'
+    return html;
+  }
+
+  $('.comment_each').on('submit', '#edit_comment', function(e){
+    e.preventDefault();
+    var formData = new FormData(this);
+    var url = $(this).attr('action');
+    var edit_comment = $(this)
+    $.ajax({
+      url: url,
+      type: "PATCH",
+      data: formData,
+      dataType: 'json',
+      processData: false,
+      contentType: false
+    })
+    .done(function(data){
+      console.log(data);
+      var html = buildUpdateHTML(data);
+      edit_comment.parent().html(html);
+    })
+    .fail(function(){
+      alert('通信エラー');
+    })
+    return false;
+  })
+
 });
