@@ -130,7 +130,7 @@ $(function() {
                + "</p>"
                + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '">'
                + '<p class="comment_destroy">削除</p></a>'
-               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '/edit">'
+               + '<a>'
                + '<p class="comment_edit">編集</p></a>'
                + "</div>"
     return html;
@@ -160,7 +160,7 @@ $(function() {
   })
 
   // メッセージ機能実装(削除)
-  $(".comment_destroy").on("click", function(){
+  $(".comment_list").on("click", ".comment_destroy", function(){
     var comment_id = $(this).parent().parent().data('comment-id')
     var prototype_id = $(this).parent().parent().data("prototype-id")
     var comment_each = $(this)
@@ -190,7 +190,7 @@ $(function() {
     return html;
   }
 
-  $(".comment_edit").on("click", function(){
+  $(".comment_list").on("click", ".comment_edit", function(){
     var comment_id = $(this).parent().parent().data('comment-id')
     var prototype_id = $(this).parent().parent().data("prototype-id")
     var html = buildEditForm(comment_id, prototype_id);
@@ -208,12 +208,12 @@ $(function() {
                + "</p>"
                + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '">'
                + '<p class="comment_destroy">削除</p></a>'
-               + '<a href="/prototypes/' + comment.prototype_id + "/comments/" + comment.id + '/edit">'
+               + '<a>'
                + '<p class="comment_edit">編集</p></a>'
     return html;
   }
 
-  $('.comment_each').on('submit', '#edit_comment', function(e){
+  $('.comment_list').on('submit', '#edit_comment', function(e){
     e.preventDefault();
     var formData = new FormData(this);
     var url = $(this).attr('action');
