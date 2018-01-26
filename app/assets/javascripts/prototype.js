@@ -61,40 +61,60 @@ $(function() {
   });
 
   // いいね機能実装
+  function likeHTML(likes){
+    var html = '<button class="like">'
+               + '<i class="fa fa-heart fa-1x"></i>'
+               + 'LIKE'
+               + '<span class="count">'
+               + likes.length
+               + '</span>'
+               + '</button>'
+    return html;
+   }
+
+   function likedHTML(likes){
+    var html = '<button class="liked">'
+               + '<i class="fa fa-heart fa-1x"></i>'
+               + 'LIKE'
+               + '<span class="count">'
+               + likes.length
+               + '</span>'
+               + '</button>'
+    return html;
+   }
+
   $(".button_likes").on("click", function(){
     if ($("button").hasClass("liked")){
       var prototype_id = $(this).data("prototype-id")
       var user_id = $(this).data("user-id")
       $.ajax({
-        url: "/like/" + prototype_id + ".js",
+        url: "/like/" + prototype_id,
         type: "DELETE",
-        data: { prototype_id: prototype_id },
+        data: { prototype_id: prototype_id, user_id: user_id },
         dataType: "json"
       })
       .done(function(data){
-        $(".liked").remove()
+        var html = likeHTML(data);
+        $(".button_likes").html(html);
       })
       .fail(function() {
-        setTimeout(function(){
-          location.reload();
-        },1);
+        alert('通信エラー');
       })
     }else{
       var prototype_id = $(this).data("prototype-id")
       var user_id = $(this).data("user-id")
       $.ajax({
-        url: "/like/" + prototype_id + ".js",
+        url: "/like/" + prototype_id,
         type: "POST",
         data: { prototype_id: prototype_id, user_id: user_id },
         dataType: "json"
       })
       .done(function(data){
-        $(".like").remove()
+        var html = likedHTML(data);
+        $(".button_likes").html(html);
       })
       .fail(function() {
-        setTimeout(function(){
-          location.reload();
-        },1);
+        alert('通信エラー');
       })
     }
   });
