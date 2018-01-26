@@ -74,10 +74,16 @@
       .comment_list
         - if @comments.present?
           - @comments.each do |comment|
-            %h5.user_name
-              = comment.user.name
-            %p.comment_text
-              = comment.text
+            .comment_each{ "data-comment-id": "#{comment.id}", "data-prototype-id": "#{comment.prototype_id}" }
+              %h5.user_name
+                = comment.user.name
+              %p.comment_text
+                = comment.text
+              - if user_signed_in? && current_user.id == comment.user_id
+                = link_to prototype_comment_path(@prototype.id, comment.id) do
+                  %p.comment_destroy 削除
+                %a
+                  %p.comment_edit 編集
       - if user_signed_in?
         .comment_input
           %h4

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   
   resources :users, only: [:show, :edit, :update]
   resources :prototypes, only: [:index, :new, :create, :show, :destroy, :delete, :edit, :update] do
-    resources :comments, only: [:create]
+    resources :comments, only: [:create, :destroy, :edit, :update]
   end
   
   post   '/like/:prototype_id' => 'likes#create',   as: 'create'
